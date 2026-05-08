@@ -1,70 +1,225 @@
-# Getting Started with Create React App
+# The Grand Compendium
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A hierarchical knowledge management web app built with React.
 
-## Available Scripts
+The Grand Compendium is designed to function as a lightweight personal wiki / notebook system for organizing large projects, ideas, worldbuilding notes, development plans, and long-form structured thoughts.
 
-In the project directory, you can run:
+Unlike traditional note apps, every entry can contain infinitely nested child entries, allowing ideas to be broken down into chapters, subchapters, and detailed branches.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+# Website
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+[The Grand Compendium](grand-compendium.web.app)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Features
 
-### `npm run build`
+## Current MVP Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Recursive chapter/subchapter hierarchy
+* Expandable/collapsible navigation tree
+* Rich text note editing
+* Search by title or content
+* Recursive node deletion
+* Drag-and-drop chapter nesting
+* Local persistence using localStorage
+* Mobile responsive layout
+* Collapsible sidebar navigation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Tech Stack
 
-### `npm run eject`
+## Frontend
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* React
+* JavaScript
+* CSS
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Storage
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* localStorage (current MVP)
+* Firebase Firestore (planned)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Deployment
 
-## Learn More
+* Firebase Hosting
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Project Structure
 
-### Code Splitting
+```text
+src/
+├── components/
+│   ├── Sidebar/
+│   ├── TreeNode/
+│   ├── Editor/
+│
+├── services/
+│
+├── styles/
+│
+├── utils/
+│
+├── App.js
+└── index.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+# Data Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The application uses a flat node structure instead of deeply nested JSON trees.
 
-### Making a Progressive Web App
+Each node contains a `parentId` field:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```js
+{
+  id,
+  title,
+  content,
+  parentId,
+  expanded
+}
+```
 
-### Advanced Configuration
+This allows:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+* infinite nesting
+* recursive rendering
+* efficient searching
+* easier drag/drop manipulation
+* scalable cloud storage
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+# How It Works
 
-### `npm run build` fails to minify
+## Recursive Tree Rendering
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The sidebar uses recursive React components to render nested chapters:
+
+```text
+Chapter
+ ├── Subchapter
+ │    ├── Notes
+ │    └── Ideas
+ └── Additional Notes
+```
+
+Each node can:
+
+* contain text content
+* contain child nodes
+* be reordered
+* be deleted recursively
+
+---
+
+# Running Locally
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Start development server
+
+```bash
+npm start
+```
+
+---
+
+# Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+# Deployment
+
+This project is intended to be deployed using Firebase Hosting.
+
+```bash
+firebase deploy
+```
+
+---
+
+# Planned Features
+
+## High Priority
+
+* Firebase Firestore synchronization
+* User authentication
+* Cloud save
+* Markdown support
+* Chapter ordering system
+* Drag/drop reordering improvements
+* Search highlighting
+* Auto-save indicators
+
+---
+
+# Future Ideas
+
+## Knowledge Management Features
+
+* Tags
+* Favorites
+* Backlinks
+* Graph visualization
+* Cross-note references
+* Completion tracking
+* Progress percentages
+
+---
+
+# Editor Improvements
+
+* Rich text formatting
+* Image embedding
+* Code blocks
+* Tables
+* Checklists
+* Syntax highlighting
+
+---
+
+# Long-Term Vision
+
+The Grand Compendium is intended to evolve into a scalable personal knowledge system combining ideas from:
+
+* OneNote
+* Obsidian
+* Notion
+* Personal wiki systems
+* Development documentation tools
+
+while remaining lightweight, understandable, and fully customizable.
+
+---
+
+# Learning Goals
+
+This project was also built as a software engineering learning project covering:
+
+* recursive rendering
+* tree data structures
+* React state management
+* drag-and-drop systems
+* responsive design
+* cloud persistence
+* scalable application architecture
+
+---
+
+# License
+
+Personal project / open learning project.
