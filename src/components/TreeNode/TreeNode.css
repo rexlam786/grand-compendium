@@ -1,0 +1,26 @@
+.tree-node {
+  margin-left: 15px;
+  margin-top: 8px;
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.tree-row.selected {
+  background: #444;
+}
+
+.tree-title {
+  cursor: pointer;
+  flex: 1;
+  word-break: break-word;
+}
+
+.tree-button {
+  font-size: 12px;
+}
