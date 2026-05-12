@@ -1,10 +1,43 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Editor from "./components/Editor/Editor";
+import {
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+} from "firebase/firestore";
+
+import { db } from "./services/firebase";
 
 import "./App.css";
 
 export default function App() {
+
+useEffect(() => {
+  const loadNodes = async () => {
+    const querySnapshot =
+      await getDocs(
+        collection(db, "nodes")
+      );
+
+    const loadedNodes = [];
+
+    querySnapshot.forEach((doc) => {
+      loadedNodes.push(doc.data());
+    });
+
+    if (loadedNodes.length > 0) {
+      setNodes(loadedNodes);
+    }
+  };
+
+  loadNodes();
+}, []);
+
+
+
+
   const [nodes, setNodes] = useState(() => {
     const saved = localStorage.getItem("compendium");
 
@@ -36,14 +69,28 @@ const [saveStatus, setSaveStatus] =
 useEffect(() => {
   setSaveStatus("saving...");
 
-  const timeout = setTimeout(() => {
-    localStorage.setItem(
-      "compendium",
-      JSON.stringify(nodes)
-    );
+  const timeout = setTimeout(
+    async () => {
+      // LOCAL BACKUP
 
-    setSaveStatus("saved");
-  }, 500);
+      localStorage.setItem(
+        "compendium",
+        JSON.stringify(nodes)
+      );
+
+      // FIREBASE SAVE
+
+      for (const node of nodes) {
+        await setDoc(
+          doc(db, "nodes", node.id),
+          node
+        );
+      }
+
+      setSaveStatus("saved");
+    },
+    500
+  );
 
   return () => clearTimeout(timeout);
 }, [nodes]);
