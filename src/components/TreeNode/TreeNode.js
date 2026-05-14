@@ -135,6 +135,77 @@ export default function TreeNode({
     );
   };
 
+
+const reorderSiblings = (
+  draggedId,
+  targetNode,
+  position
+) => {
+  const draggedNode = nodes.find(
+    (n) => n.id === draggedId
+  );
+
+  if (!draggedNode) return;
+
+  // prevent self-drop
+
+  if (draggedId === targetNode.id)
+    return;
+
+  // siblings of target
+
+  const siblings = nodes
+    .filter(
+      (n) =>
+        n.parentId ===
+        targetNode.parentId
+    )
+    .sort((a, b) => a.order - b.order);
+
+  // remove dragged node
+
+  const filtered = siblings.filter(
+    (n) => n.id !== draggedId
+  );
+
+  const targetIndex =
+    filtered.findIndex(
+      (n) => n.id === targetNode.id
+    );
+
+  const insertIndex =
+    position === "above"
+      ? targetIndex
+      : targetIndex + 1;
+
+  // insert dragged node
+
+  filtered.splice(insertIndex, 0, {
+    ...draggedNode,
+    parentId: targetNode.parentId,
+  });
+
+  // regenerate clean order numbers
+
+  const updated = filtered.map(
+    (node, index) => ({
+      ...node,
+      order: index,
+    })
+  );
+
+  setNodes(
+    nodes.map((node) => {
+      const updatedNode =
+        updated.find(
+          (u) => u.id === node.id
+        );
+
+      return updatedNode || node;
+    })
+  );
+};
+
   return (
     <div className="tree-node">
       {/* TOP DROP ZONE */}
@@ -152,10 +223,10 @@ export default function TreeNode({
               "nodeId"
             );
 
-          moveNode(
+          reorderSiblings(
             draggedId,
-            node.parentId,
-            node.order - 0.5
+            node,
+            "above"
           );
         }}
       />
@@ -248,10 +319,10 @@ export default function TreeNode({
               "nodeId"
             );
 
-          moveNode(
+          reorderSiblings(
             draggedId,
-            node.parentId,
-            node.order + 0.5
+            node,
+            "below"
           );
         }}
       />

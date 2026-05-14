@@ -24,3 +24,15 @@
 .tree-button {
   font-size: 12px;
 }
+
+.drop-zone {
+  height: 5px;
+  margin: 2px 0;
+  border-radius: 4px;
+
+  transition: 0.15s;
+}
+
+.drop-zone:hover {
+  background: #4a90e2;
+}
