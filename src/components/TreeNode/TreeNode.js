@@ -398,37 +398,42 @@ const depthColors = [
           {node.title}
         </span>
 
-        {/*Reorder*/}
-        <button
-          className="tree-button"
-          onClick={moveUp}
-        >
-          ↑
-        </button>
+        {selectedId === node.id && (
+          
+          <div className="node-controls">
+            <button
+              className="tree-button"
+              onClick={moveUp}
+              title="Move Up"
+            >
+              ↑
+            </button>
 
-        <button
-          className="tree-button"
-          onClick={moveDown}
-        >
-          ↓
-        </button>
-        {/* ADD CHILD */}
+            <button
+              className="tree-button"
+              onClick={moveDown}
+              title="Move Down"
+            >
+              ↓
+            </button>
 
-        <button
-          className="tree-button"
-          onClick={addChild}
-        >
-          +
-        </button>
+            <button
+              className="tree-button"
+              onClick={addChild}
+              title="Add Child"
+            >
+              +
+            </button>
 
-        {/* DELETE */}
-
-        <button
-          className="tree-button"
-          onClick={deleteNode}
-        >
-          🗑
-        </button>
+            <button
+              className="tree-button"
+              onClick={deleteNode}
+              title="Delete"
+            >
+              🗑
+            </button>
+          </div>
+        )}
       </div>
 
       {/* BOTTOM DROP ZONE */}
