@@ -11,9 +11,9 @@
   border-radius: 4px;
 }
 
-.tree-row.selected {
+/* .tree-row.selected {
   background: #444;
-}
+} */
 
 .tree-title {
   cursor: pointer;
@@ -36,3 +36,27 @@
 .drop-zone:hover {
   background: #4a90e2;
 }
+
+
+.tree-row {
+  display: flex;
+  align-items: center;
+
+  margin: 2px 0;
+
+  padding: 4px 8px;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.05);
+}
+.tree-row.selected {
+  background: #4a90e2;
+}
+
+/* .tree-title {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+} */
+

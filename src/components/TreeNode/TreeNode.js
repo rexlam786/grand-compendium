@@ -206,6 +206,111 @@ const reorderSiblings = (
   );
 };
 
+const getDepth = (nodeId) => {
+  let depth = 0;
+
+  let current = nodes.find(
+    (n) => n.id === nodeId
+  );
+
+  while (current?.parentId) {
+    depth++;
+
+    current = nodes.find(
+      (n) => n.id === current.parentId
+    );
+  }
+
+  return depth;
+};
+
+
+const moveUp = () => {
+  const siblings = nodes
+    .filter(
+      (n) =>
+        n.parentId === node.parentId
+    )
+    .sort((a, b) => a.order - b.order);
+
+  const index = siblings.findIndex(
+    (n) => n.id === node.id
+  );
+
+  if (index <= 0) return;
+
+  const previous =
+    siblings[index - 1];
+
+  setNodes(
+    nodes.map((n) => {
+      if (n.id === node.id)
+        return {
+          ...n,
+          order: previous.order,
+        };
+
+      if (n.id === previous.id)
+        return {
+          ...n,
+          order: node.order,
+        };
+
+      return n;
+    })
+  );
+};
+
+const moveDown = () => {
+  const siblings = nodes
+    .filter(
+      (n) =>
+        n.parentId === node.parentId
+    )
+    .sort((a, b) => a.order - b.order);
+
+  const index = siblings.findIndex(
+    (n) => n.id === node.id
+  );
+
+  if (
+    index ===
+    siblings.length - 1
+  )
+    return;
+
+  const next =
+    siblings[index + 1];
+
+  setNodes(
+    nodes.map((n) => {
+      if (n.id === node.id)
+        return {
+          ...n,
+          order: next.order,
+        };
+
+      if (n.id === next.id)
+        return {
+          ...n,
+          order: node.order,
+        };
+
+      return n;
+    })
+  );
+};
+
+const depth = getDepth(node.id);
+
+const depthColors = [
+  "#4a90e2",
+  "#50c878",
+  "#ffb347",
+  "#d291ff",
+  "#ff7f7f",
+];
+
   return (
     <div className="tree-node">
       {/* TOP DROP ZONE */}
@@ -233,12 +338,20 @@ const reorderSiblings = (
 
       {/* MAIN ROW */}
 
-      <div
-        className={`tree-row ${
-          selectedId === node.id
-            ? "selected"
-            : ""
-        }`}
+        <div
+          className={`tree-row ${
+            selectedId === node.id
+              ? "selected"
+              : ""
+          }`}
+          style={{
+            borderLeft: `5px solid ${
+              depthColors[
+                depth % depthColors.length
+              ]
+            }`,
+          }}
+        
         draggable
         onDragStart={handleDragStart}
         onDragOver={(e) =>
@@ -285,6 +398,20 @@ const reorderSiblings = (
           {node.title}
         </span>
 
+        {/*Reorder*/}
+        <button
+          className="tree-button"
+          onClick={moveUp}
+        >
+          ↑
+        </button>
+
+        <button
+          className="tree-button"
+          onClick={moveDown}
+        >
+          ↓
+        </button>
         {/* ADD CHILD */}
 
         <button

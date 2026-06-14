@@ -31,7 +31,7 @@ export default function App() {
             title: "My First Chapter",
             content: "Start writing...",
             parentId: null,
-            expanded: true,
+            expanded: false,
             order: Date.now(),
             updatedAt: Date.now(),
           },
@@ -80,8 +80,10 @@ export default function App() {
         const loadedNodes = [];
 
         querySnapshot.forEach((docSnap) => {
-          loadedNodes.push(docSnap.data());
-        });
+        loadedNodes.push({
+          ...docSnap.data(),
+          expanded: false,
+        });        });
 
         // SORT BY UPDATED TIME
 
@@ -98,7 +100,10 @@ export default function App() {
           setNodes(loadedNodes);
 
           setPreviousNodeIds(
-            loadedNodes.map((n) => n.id)
+            loadedNodes.map(node => ({
+              ...node,
+              expanded: false
+            }))
           );
 
           setSelectedId(

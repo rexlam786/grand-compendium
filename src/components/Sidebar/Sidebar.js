@@ -24,7 +24,7 @@ export default function Sidebar({
         title: "New Chapter",
         content: "",
         parentId: null,
-        expanded: true,
+        expanded: false,
         order: Date.now(),
       },
     ]);
@@ -39,6 +39,8 @@ export default function Sidebar({
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
   );
+
+
 
   return (
     <div
